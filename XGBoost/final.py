@@ -1,11 +1,37 @@
 import streamlit as st
 import joblib
+import gdown
+import os
 import xgboost as xgb
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Load the trained model and vectorizer
-model = joblib.load("suicide_prediction_xgboost.pkl")
-vectorizer = joblib.load("tfidf_vectorizer.pkl")
+# model = joblib.load("suicide_prediction_xgboost.pkl")
+# vectorizer = joblib.load("tfidf_vectorizer.pkl")
+# Google Drive File ID for model
+# ------------------------------------------------------
+file_id = "15oHrvU7ZOp1RKi-6Yu21XOHM2_V6pW6a"
+url = f"https://drive.google.com/uc?id={file_id}"
+output = "suicide_prediction_xgboost.pkl"
+
+# Download the model if it doesn't exist
+if not os.path.exists(output):
+    gdown.download(url, output, quiet=False)
+
+# Load the model
+model = joblib.load(output)
+# ----------------------------------------------------------
+
+file_id = "1xKe4Ox3KKR7Gx4eRbxZvOK0eJ-n7D-Jo"
+url = f"https://drive.google.com/uc?id={file_id}"
+output = "tfidf_vectorizer.pkl"
+
+if not os.path.exists(output):
+    gdown.download(url, output, quiet=False)
+
+vectorizer = joblib.load(output)
+
+# ----------------------------------------------------------
 
 # Streamlit UI Design
 st.set_page_config(page_title="Suicide Prediction App", page_icon="🔍", layout="centered")
